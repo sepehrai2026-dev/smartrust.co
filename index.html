@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmarTrust — Trust & Estate Planning Calculator</title>
+<meta name="description" content="Free trust and estate planning calculator. Estimate costs, compare trust types, and understand which estate planning strategy is right for your situation.">
+<meta name="keywords" content="trust calculator, estate planning cost, revocable trust vs irrevocable, estate planning calculator, trust comparison">
+<meta property="og:title" content="SmarTrust — Trust & Estate Planning Calculator">
+<meta property="og:description" content="Free trust and estate planning calculator. Estimate costs, compare trust types, and understand which estate planning strategy is right for your situation.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://smartrust.co">
+<link rel="canonical" href="https://smartrust.co">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0a;
+  --bg-card: #111111;
+  --bg-surface: #161616;
+  --text: #e8e8e8;
+  --text-secondary: #888888;
+  --text-muted: #555555;
+  --accent: var(--site-accent, #2563eb);
+  --accent-light: var(--site-accent-light, #1a3a5c);
+  --accent-dark: var(--site-accent-dark, #1e40af);
+  --border: #222222;
+  --border-accent: #333333;
+  --max-w: 960px;
+  --nav-h: 56px;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: var(--accent); text-decoration: none; transition: color 0.15s ease; }
+a:hover { color: var(--text); }
+
+.nav-logo-icon { display: none; }
+
+/* ---- NAV ---- */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--nav-h);
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: color 0.15s ease;
+}
+
+.nav-links a:hover { color: var(--text); }
+
+/* ---- HERO ---- */
+.hero {
+  padding-top: calc(var(--nav-h) + 6rem);
+  padding-bottom: 6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.hero-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.hero-title {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  max-width: 700px;
+}
+
+.hero-sub {
+  margin-top: 1.25rem;
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+.hero-cta {
+  margin-top: 2.5rem;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-primary:hover { background: var(--accent-dark); color: #fff; }
+
+/* ---- CONTENT ---- */
+.content {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 1.5rem 6rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 2rem;
+  color: var(--text);
+}
+
+/* ---- TOOL SECTION ---- */
+.tool-section {
+  padding-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.tool-header {
+  margin-bottom: 2rem;
+}
+
+.tool-area {
+  border: 1px solid var(--border-accent);
+  background: var(--bg-card);
+  border-radius: 0;
+}
+
+.tool-container {
+  padding: 2.5rem;
+  min-height: 320px;
+}
+
+.tool-container h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.tool-container label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  margin-top: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tool-container label:first-of-type {
+  margin-top: 0;
+}
+
+.tool-container input[type="text"],
+.tool-container input[type="number"],
+.tool-container input[type="email"],
+.tool-container select,
+.tool-container textarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border-accent);
+  border-radius: 0;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color 0.15s ease;
+}
+
+.tool-container input:focus,
+.tool-container select:focus,
+.tool-container textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.tool-container button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.75rem;
+  border-radius: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: background 0.15s ease;
+}
+
+.tool-container button:hover {
+  background: var(--accent-dark);
+}
+
+.tool-result {
+  margin-top: 1.75rem;
+  padding: 1.5rem;
+  background: var(--bg-surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.tool-result strong {
+  font-weight: 700;
+}
+
+.tool-row {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+}
+
+.tool-row > div {
+  flex: 1;
+}
+
+/* ---- FEATURES ---- */
+.features-section {
+  padding-top: 5rem;
+  margin-bottom: 5rem;
+  border-top: 1px solid var(--border);
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.feature-card {
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: 0;
+  counter-increment: feature;
+  position: relative;
+}
+
+.feature-icon {
+  display: none;
+}
+
+.feature-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.feature-num::before {
+  content: counter(feature, decimal-leading-zero);
+}
+
+.feature-name {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.01em;
+}
+
+.feature-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ---- ABOUT ---- */
+.about {
+  padding-top: 5rem;
+  margin-bottom: 5rem;
+  border-top: 1px solid var(--border);
+}
+
+.about-content {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 640px;
+}
+
+.about-content h3 {
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 2rem 0 0.75rem;
+}
+
+.about-content h3:first-child {
+  margin-top: 0;
+}
+
+.about-content p {
+  margin-bottom: 1rem;
+}
+
+/* ---- FAQ ---- */
+.faq {
+  padding-top: 5rem;
+  margin-bottom: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-q {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 1.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+  transition: color 0.15s ease;
+}
+
+.faq-q:hover { color: var(--accent); }
+
+.faq-q::after {
+  content: '+';
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+
+.faq-q.open::after { content: '\2212'; color: var(--accent); }
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.faq-a.open {
+  max-height: 500px;
+  padding-bottom: 1.25rem;
+}
+
+.faq-a p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ---- FOOTER ---- */
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.footer-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 3rem 1.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-logo {
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.footer-disc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  max-width: 420px;
+  line-height: 1.6;
+}
+
+.footer-heading {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footer-links a {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.footer-links a:hover { color: var(--text); }
+
+.footer-bottom {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 2.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.footer-bottom p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 640px) {
+  .hero {
+    padding-top: calc(var(--nav-h) + 3.5rem);
+    padding-bottom: 3.5rem;
+  }
+
+  .nav-links { display: none; }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tool-row {
+    flex-direction: column;
+  }
+
+  .tool-container {
+    padding: 1.5rem;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+  }
+
+  .tool-section,
+  .features-section,
+  .about,
+  .faq {
+    padding-top: 3rem;
+    margin-bottom: 3rem;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><span class="nav-logo-icon" aria-hidden="true">🏛️</span>SmarTrust</a>
+    <div class="nav-links">
+      <a href="#tool">Tool</a>
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-label">SmarTrust</p>
+    <h1 class="hero-title">Estate planning, simplified</h1>
+    <p class="hero-sub">Compare trust types, estimate costs, and figure out which estate plan fits your situation — in 60 seconds.</p>
+    <div class="hero-cta">
+      <a href="#tool" class="btn-primary">Get started</a>
+    </div>
+  </div>
+</header>
+
+<main class="content">
+
+  <section class="tool-section" id="tool">
+    <div class="tool-header">
+      <h2 class="section-title">SmarTrust</h2>
+    </div>
+    <div class="tool-area" id="tool-area">
+      <div class="tool-container" id="tool-container"></div>
+    </div>
+  </section>
+
+  <section class="features-section" id="features">
+    <h2 class="section-title">What this tool helps with</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+  <div class="feature-icon">⚖️</div>
+  <div class="feature-name">Trust type comparison</div>
+  <div class="feature-desc">Compare revocable, irrevocable, special needs, and charitable trust features side by side.</div>
+</div>
+
+<div class="feature-card">
+  <div class="feature-icon">💰</div>
+  <div class="feature-name">Cost estimator</div>
+  <div class="feature-desc">Get ballpark costs for trust creation, funding, and ongoing administration.</div>
+</div>
+
+<div class="feature-card">
+  <div class="feature-icon">🏠</div>
+  <div class="feature-name">Probate savings</div>
+  <div class="feature-desc">See how much your estate could save by avoiding probate with a trust.</div>
+</div>
+
+<div class="feature-card">
+  <div class="feature-icon">📋</div>
+  <div class="feature-name">Tax impact preview</div>
+  <div class="feature-desc">Understand potential estate tax implications based on your estate size.</div>
+</div>
+
+<div class="feature-card">
+  <div class="feature-icon">👨‍👩‍👧‍👦</div>
+  <div class="feature-name">Beneficiary planning</div>
+  <div class="feature-desc">Plan how assets will be distributed among your beneficiaries.</div>
+</div>
+
+<div class="feature-card">
+  <div class="feature-icon">🔍</div>
+  <div class="feature-name">Attorney matching</div>
+  <div class="feature-desc">Coming soon: get matched with estate planning attorneys in your area.</div>
+</div>
+
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <h2 class="section-title">Why estate planning matters</h2>
+    <div class="about-content"><h3>Protect your family's future</h3><p>Without a proper estate plan, your assets go through probate — a public, expensive, and slow court process. A well-structured trust can avoid probate, reduce estate taxes, protect assets from creditors, and ensure your wishes are carried out exactly as intended.</p><h3>It's not just for the wealthy</h3><p>Many people think estate planning is only for millionaires. In reality, anyone with a home, retirement accounts, or children should have at least a basic estate plan. A simple revocable living trust can cost less than a single month's mortgage payment.</p><h3>Types of trusts</h3><p>Revocable living trusts are the most common — you maintain control and can change them anytime. Irrevocable trusts offer stronger asset protection and tax benefits but can't be easily modified. Special needs trusts protect benefits eligibility. Charitable trusts reduce taxes while supporting causes you care about.</p></div>
+  </section>
+
+  <section class="faq" id="faq">
+    <h2 class="section-title">Frequently asked questions</h2>
+    <div class="faq-list" id="faq-list"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo"><span class="nav-logo-icon" aria-hidden="true">🏛️</span>SmarTrust</span>
+      <p class="footer-disc">SmarTrust.co provides educational estimates only. This is not legal or financial advice. Consult a qualified estate planning attorney for your specific situation.</p>
+    </div>
+    <div class="footer-links">
+      <p class="footer-heading">Resources</p>
+      <a href="https://sepehr.ai" target="_blank" rel="noopener">sepehr.ai</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 SmarTrust. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+const SITE_CONFIG = {"faqs":[{"q":"How accurate is this calculator?","a":"This provides rough estimates for educational purposes. Actual costs vary significantly by state, complexity of your estate, and attorney fees. Use these numbers as a starting point for conversations with an estate planning professional."},{"q":"Do I need a trust or is a will enough?","a":"A will goes through probate (public, slow, expensive). A trust avoids probate and offers more control over distribution. If you own real estate or have assets over $100,000, a trust is generally recommended. A will alone may be sufficient for simple estates."},{"q":"How much does setting up a trust cost?","a":"A basic revocable living trust typically costs $1,500-$3,000 with an attorney. Complex trusts (irrevocable, special needs, charitable) can cost $3,000-$10,000+. Online trust services start around $300-$500 but may not be appropriate for complex situations."},{"q":"What's the difference between revocable and irrevocable?","a":"A revocable trust can be modified or dissolved at any time — you keep full control. An irrevocable trust generally can't be changed once created, but it removes assets from your taxable estate and provides stronger creditor protection. Most people start with a revocable trust."},{"q":"At what estate size do I need to worry about estate taxes?","a":"The federal estate tax exemption is currently over $13 million per individual. Most estates are not subject to federal estate tax. However, some states have their own estate or inheritance taxes with much lower thresholds. Check your state's rules."}],"accentColor":"#0d9488","accentLight":"#ccfbf1","accentDark":"#0f766e","ctaText":""};
+document.addEventListener('DOMContentLoaded', () => {
+  // Set accent colors from config
+  if (SITE_CONFIG.accentColor) {
+    document.documentElement.style.setProperty('--site-accent', SITE_CONFIG.accentColor);
+    document.documentElement.style.setProperty('--site-accent-light', SITE_CONFIG.accentLight || SITE_CONFIG.accentColor + '22');
+    document.documentElement.style.setProperty('--site-accent-dark', SITE_CONFIG.accentDark || SITE_CONFIG.accentColor);
+  }
+
+  // FAQ accordion
+  const faqList = document.getElementById('faq-list');
+  if (SITE_CONFIG.faqs) {
+    SITE_CONFIG.faqs.forEach(faq => {
+      const item = document.createElement('div');
+      item.className = 'faq-item';
+      item.innerHTML = `
+        <button class="faq-q">${faq.q}</button>
+        <div class="faq-a"><p>${faq.a}</p></div>
+      `;
+      const btn = item.querySelector('.faq-q');
+      const answer = item.querySelector('.faq-a');
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('open');
+        answer.classList.toggle('open');
+      });
+      faqList.appendChild(item);
+    });
+  }
+
+  // Feature card numbering
+  document.querySelectorAll('.feature-card').forEach(card => {
+    const numEl = document.createElement('div');
+    numEl.className = 'feature-num';
+    card.insertBefore(numEl, card.firstChild);
+  });
+
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const current = window.scrollY;
+    if (current > 60) {
+      nav.style.borderBottomColor = '#333';
+    } else {
+      nav.style.borderBottomColor = '';
+    }
+    lastScroll = current;
+  }, { passive: true });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Init tool if available
+  if (typeof initTool === 'function') {
+    initTool(document.getElementById('tool-container'));
+  }
+});
+
+function initTool(container) {
+  container.innerHTML = `
+    <h3>Estate planning calculator</h3>
+    <div class="tool-row">
+      <div>
+        <label for="st-estate">Total estate value ($)</label>
+        <input type="number" id="st-estate" placeholder="500000" value="500000">
+      </div>
+      <div>
+        <label for="st-state">State</label>
+        <select id="st-state">
+          <option value="avg">Average (US)</option>
+          <option value="ca">California</option>
+          <option value="ny">New York</option>
+          <option value="tx">Texas</option>
+          <option value="fl">Florida</option>
+          <option value="wa">Washington</option>
+          <option value="ma">Massachusetts</option>
+          <option value="or">Oregon</option>
+        </select>
+      </div>
+    </div>
+    <div class="tool-row">
+      <div>
+        <label for="st-type">Trust type</label>
+        <select id="st-type">
+          <option value="revocable">Revocable living trust</option>
+          <option value="irrevocable">Irrevocable trust</option>
+          <option value="special">Special needs trust</option>
+          <option value="charitable">Charitable remainder trust</option>
+        </select>
+      </div>
+      <div>
+        <label for="st-beneficiaries">Number of beneficiaries</label>
+        <input type="number" id="st-beneficiaries" value="2" min="1" max="20">
+      </div>
+    </div>
+    <button id="st-calc">Calculate</button>
+    <div id="st-result"></div>
+  `;
+
+  const probateRates = {
+    avg: 0.04, ca: 0.05, ny: 0.045, tx: 0.035, fl: 0.03, wa: 0.04, ma: 0.04, or: 0.045
+  };
+
+  const stateEstateTax = {
+    avg: 0, ca: 0, ny: 6110000, tx: 0, fl: 0, wa: 2193000, ma: 2000000, or: 1000000
+  };
+
+  const trustCosts = {
+    revocable: { low: 1500, high: 3000, annual: 0 },
+    irrevocable: { low: 3000, high: 7000, annual: 500 },
+    special: { low: 3500, high: 8000, annual: 750 },
+    charitable: { low: 5000, high: 10000, annual: 1000 }
+  };
+
+  document.getElementById('st-calc').addEventListener('click', () => {
+    const estate = parseFloat(document.getElementById('st-estate').value) || 0;
+    const state = document.getElementById('st-state').value;
+    const type = document.getElementById('st-type').value;
+    const bens = parseInt(document.getElementById('st-beneficiaries').value) || 1;
+
+    const probateRate = probateRates[state];
+    const probateCost = Math.round(estate * probateRate);
+    const costs = trustCosts[type];
+    const complexityAdd = Math.max(0, (bens - 2)) * 250;
+    const trustLow = costs.low + complexityAdd;
+    const trustHigh = costs.high + complexityAdd;
+    const savings = probateCost - trustHigh;
+
+    const stateThreshold = stateEstateTax[state];
+    let taxNote = '';
+    if (stateThreshold > 0 && estate > stateThreshold) {
+      const taxableAmount = estate - stateThreshold;
+      const estTax = Math.round(taxableAmount * 0.12);
+      taxNote = `<br><strong style="color:var(--accent)">State estate tax alert:</strong> Your estate exceeds the ${state.toUpperCase()} threshold of ${stateThreshold.toLocaleString()}. Estimated state estate tax: <strong>${estTax.toLocaleString()}</strong>. An irrevocable trust may help reduce this.`;
+    }
+
+    const fedThreshold = 13610000;
+    let fedNote = '';
+    if (estate > fedThreshold) {
+      const fedTax = Math.round((estate - fedThreshold) * 0.40);
+      fedNote = `<br><strong style="color:var(--accent)">Federal estate tax:</strong> Estate exceeds ${fedThreshold.toLocaleString()} exemption. Estimated federal tax: <strong>${fedTax.toLocaleString()}</strong> (40% rate).`;
+    }
+
+    const typeDescriptions = {
+      revocable: 'You keep full control and can modify or dissolve the trust at any time. Assets avoid probate but remain in your taxable estate.',
+      irrevocable: 'Assets are removed from your taxable estate, providing tax benefits and creditor protection. Changes are difficult once established.',
+      special: 'Designed to provide for a beneficiary with disabilities without disqualifying them from government benefits like SSI or Medicaid.',
+      charitable: 'Provides income to you during your lifetime, then donates the remainder to charity. Offers immediate tax deductions and reduces estate size.'
+    };
+
+    document.getElementById('st-result').innerHTML = `
+      <div class="tool-result">
+        <strong>Estate planning estimate</strong>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0">
+          <div>
+            <div style="font-size:0.8rem;color:var(--text-muted)">Probate cost (without trust)</div>
+            <div style="font-size:1.25rem;font-weight:600;color:#dc2626">${probateCost.toLocaleString()}</div>
+          </div>
+          <div>
+            <div style="font-size:0.8rem;color:var(--text-muted)">Trust setup cost</div>
+            <div style="font-size:1.25rem;font-weight:600;color:var(--accent)">${trustLow.toLocaleString()} – ${trustHigh.toLocaleString()}</div>
+          </div>
+          <div>
+            <div style="font-size:0.8rem;color:var(--text-muted)">Estimated savings</div>
+            <div style="font-size:1.25rem;font-weight:600;color:#16a34a">${savings > 0 ? '
+</script>
+</body>
+</html>
+ + savings.toLocaleString() + '+' : 'Comparable cost'}</div>
+          </div>
+          <div>
+            <div style="font-size:0.8rem;color:var(--text-muted)">Annual maintenance</div>
+            <div style="font-size:1.25rem;font-weight:600">${costs.annual > 0 ? '
+</script>
+</body>
+</html>
+ + costs.annual.toLocaleString() + '/yr' : 'None'}</div>
+          </div>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.5rem"><strong>${type.charAt(0).toUpperCase() + type.slice(1)} trust:</strong> ${typeDescriptions[type]}</p>
+        ${taxNote}${fedNote}
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-top:1rem;border-top:1px solid var(--border);padding-top:0.75rem">These are rough estimates for educational purposes. Actual costs depend on attorney fees, estate complexity, and specific state laws. Consult a qualified estate planning attorney.</p>
+      </div>
+    `;
+  });
+}
+
+</script>
+</body>
+</html>
